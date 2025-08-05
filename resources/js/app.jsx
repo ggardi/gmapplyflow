@@ -1,4 +1,4 @@
-import "./bootstrap.js";
+import "./http-setup.js";
 import "../css/app.css";
 
 import React from "react";

@@ -1,7 +1,7 @@
 /* Design System - CSS Custom Properties */
 :root {
   /* Colors */
-  --color-primary: #3b82f6;
+  --color-primary: #262A82;
   --color-primary-hover: #2563eb;
   --color-primary-focus: rgba(59, 130, 246, 0.1);
   --color-success: #10b981;
