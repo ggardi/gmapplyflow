@@ -8,17 +8,13 @@ import Select from "../components/Select";
 import SearchableSelect from "../components/SearchableSelect";
 import FormRow from "../components/FormRow";
 
-console.log("Welcome.js is loading...");
+console.log("Apply Form is loading...");
 
-// Global email validation
-const EMAIL_PATTERN = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z]{2,}";
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/;
 
-// LocalStorage key for form data
 const FORM_STORAGE_KEY = 'applyOnline_formData';
 const FORM_TIMESTAMP_KEY = 'applyOnline_formTimestamp';
 
-// Helper functions for localStorage
 const saveFormData = (data) => {
     try {
         localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(data));
@@ -37,13 +33,12 @@ const loadFormData = () => {
             const data = JSON.parse(savedData);
             const savedTime = parseInt(timestamp);
             const currentTime = Date.now();
-            const dayInMs = 24 * 60 * 60 * 1000; // 24 hours
+            // 24 hours
+            const dayInMs = 24 * 60 * 60 * 1000; 
             
-            // Only return data if it's less than 24 hours old
             if (currentTime - savedTime < dayInMs) {
                 return { data, timestamp: savedTime };
             } else {
-                // Clear old data
                 clearFormData();
             }
         }
@@ -81,7 +76,6 @@ export default function ApplyForm({ flash }) {
 
     const { data, setData, post, processing, errors } = useForm(initialFormData);
 
-    // Local validation state for immediate feedback
     const [localErrors, setLocalErrors] = React.useState({});
     const [touchedFields, setTouchedFields] = React.useState({});
     const [loanOfficerResults, setLoanOfficerResults] = React.useState([]);
@@ -90,14 +84,11 @@ export default function ApplyForm({ flash }) {
     const [checkingEmail, setCheckingEmail] = React.useState(false);
     const [lastCheckedEmail, setLastCheckedEmail] = React.useState('');
     
-    // State for managing saved data restoration
     const [showRestorePrompt, setShowRestorePrompt] = React.useState(false);
     const [savedDataToRestore, setSavedDataToRestore] = React.useState(null);
 
-    // Check for saved data on mount
     React.useEffect(() => {
         if (savedFormData && savedFormData.data) {
-            // Check if saved data has meaningful content (not just empty strings)
             const hasContent = Object.values(savedFormData.data).some(value => 
                 value && value !== '' && value !== null
             );
@@ -109,10 +100,8 @@ export default function ApplyForm({ flash }) {
         }
     }, []);
 
-    // Auto-save form data when it changes (debounced)
     React.useEffect(() => {
         const timeoutId = setTimeout(() => {
-            // Only save if form has some content
             const hasContent = Object.values(data).some(value => 
                 value && value !== '' && value !== null
             );
@@ -120,22 +109,18 @@ export default function ApplyForm({ flash }) {
             if (hasContent && !processing) {
                 saveFormData(data);
             }
-        }, 1000); // Save after 1 second of inactivity
+        }, 1000); 
 
         return () => clearTimeout(timeoutId);
     }, [data, processing]);
 
-    // Functions to handle saved data restoration
     const handleRestoreSavedData = () => {
         if (savedDataToRestore && savedDataToRestore.data) {
-            // Restore all form fields
             Object.keys(savedDataToRestore.data).forEach(key => {
                 setData(key, savedDataToRestore.data[key]);
             });
             
-            // If there was a state selected, we might need to restore loan officer results
             if (savedDataToRestore.data.state && savedDataToRestore.data.loan_officer) {
-                // Filter loan officers for the saved state
                 const filteredOfficers = mockLoanOfficers.filter(officer => 
                     officer.state === savedDataToRestore.data.state
                 );
@@ -152,12 +137,10 @@ export default function ApplyForm({ flash }) {
         setShowRestorePrompt(false);
         setSavedDataToRestore(null);
         
-        // Reset form to initial state
         Object.keys(initialFormData).forEach(key => {
             setData(key, initialFormData[key]);
         });
         
-        // Clear any validation states
         setLocalErrors({});
         setTouchedFields({});
         setLoanOfficerResults([]);
@@ -181,7 +164,6 @@ export default function ApplyForm({ flash }) {
         }
     };
 
-    // Static data for form options
     const loanTypeOptions = [
         { value: 'purchase', label: 'Purchase' },
         { value: 'refinance', label: 'Refinance' }
@@ -193,7 +175,6 @@ export default function ApplyForm({ flash }) {
         { value: 'TX', label: 'Texas' },
     ];
 
-    // Mock loan officer data - in real app this would come from API
     const mockLoanOfficers = [
         { id: 1, name: 'Robert Downey Jr', branch: 'Downtown Branch', state: 'CA' },
         { id: 2, name: 'Vladimir Putin', branch: 'Westside Branch', state: 'CA' },
@@ -221,20 +202,17 @@ export default function ApplyForm({ flash }) {
         setLoanOfficerResults(filtered);
     };
 
-    // Mock email existence check - randomly returns true/false
     const checkEmailExists = async (email) => {
         if (!EMAIL_REGEX.test(email)) {
-            return false; // Don't check invalid emails
+            return false; 
         }
 
         setCheckingEmail(true);
         
-        // Simulate API call delay
         await new Promise(resolve => setTimeout(resolve, 1000));
         
-        // Mock logic - for testing, make certain emails "exist"
         const existingEmails = ['test@example.com', 'john@doe.com', 'admin@test.com'];
-        const exists = existingEmails.includes(email.toLowerCase()) || Math.random() > 0.7; // 30% chance of existing
+        const exists = existingEmails.includes(email.toLowerCase()) || Math.random() > 0.7; 
         
         setEmailExists(exists);
         setEmailChecked(true);
@@ -249,7 +227,6 @@ export default function ApplyForm({ flash }) {
         const isValid = validateField('email', email);
         
         if (isValid && email.trim()) {
-            // Only check if this email hasn't been checked before
             if (email.toLowerCase() !== lastCheckedEmail) {
                 await checkEmailExists(email);
             }
@@ -263,13 +240,11 @@ export default function ApplyForm({ flash }) {
     const handleEmailChange = (email) => {
         setData('email', email);
         
-        // Reset email existence state only if email has changed from last checked
         if (email.toLowerCase() !== lastCheckedEmail) {
             setEmailExists(false);
             setEmailChecked(false);
         }
         
-        // Only validate if field has been touched
         if (touchedFields.email) {
             validateField('email', email);
         }
@@ -366,7 +341,6 @@ export default function ApplyForm({ flash }) {
     const handleFieldChange = (fieldName, value) => {
         setData(fieldName, value);
         
-        // Only validate if field has been touched
         if (touchedFields[fieldName]) {
             validateField(fieldName, value);
         }
@@ -375,7 +349,6 @@ export default function ApplyForm({ flash }) {
     const handleSubmit = (e) => {
         e.preventDefault();
         
-        // Mark all fields as touched
         setTouchedFields({
             first_name: true,
             last_name: true,
@@ -387,7 +360,6 @@ export default function ApplyForm({ flash }) {
             password_confirmation: true
         });
         
-        // Validate all fields
         const isFirstNameValid = validateField('first_name', data.first_name);
         const isLastNameValid = validateField('last_name', data.last_name);
         const isEmailValid = validateField('email', data.email);
@@ -399,23 +371,19 @@ export default function ApplyForm({ flash }) {
         
         if (!isFirstNameValid || !isLastNameValid || !isEmailValid || !isLoanTypeValid || 
             !isStateValid || !isLoanOfficerValid || !isPasswordValid || !isPasswordConfirmationValid) {
-            return; // Don't submit if validation fails
+            return; 
         }
         
-        // Check if email exists
         if (emailExists) {
-            return; // Don't submit if email already exists
+            return; 
         }
         
-        // Clear saved form data before submitting
         clearFormData();
         
         post('/submit-application');
     };
 
-    // Check if all fields are valid for submit button
     const isFormValid = () => {
-        // Check basic field validation
         const isFirstNameValid = data.first_name.trim().length >= 3;
         const isLastNameValid = data.last_name.trim().length >= 3;
         const isEmailValid = data.email.trim() && EMAIL_REGEX.test(data.email);
@@ -425,7 +393,6 @@ export default function ApplyForm({ flash }) {
         const isPasswordValid = data.password.length >= 8;
         const isPasswordConfirmationValid = data.password_confirmation && data.password_confirmation === data.password;
         
-        // Check if email has been verified and doesn't exist
         const isEmailAvailable = emailChecked && !emailExists;
         
         return isFirstNameValid && isLastNameValid && isEmailValid && isLoanTypeValid && 
@@ -439,7 +406,6 @@ export default function ApplyForm({ flash }) {
                Apply Online 
             </h1>
             
-            {/* Restore saved data prompt */}
             {showRestorePrompt && savedDataToRestore && (
                 <div className="alert alert-info" style={{ marginBottom: 'var(--space-6)' }}>
                     <div style={{ marginBottom: 'var(--space-3)' }}>
@@ -557,13 +523,11 @@ export default function ApplyForm({ flash }) {
                     value={data.state}
                     onChange={(value) => {
                         setData('state', value);
-                        // Clear loan officer selection when state changes
                         setData('loan_officer', null);
                         setLoanOfficerResults([]);
                         if (touchedFields.state) {
                             validateField('state', value);
                         }
-                        // Clear loan officer validation when state changes
                         if (touchedFields.loan_officer) {
                             validateField('loan_officer', null);
                         }
