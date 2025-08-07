@@ -7,7 +7,7 @@
   --color-primary-hover: #2563eb;
   --color-primary-focus: rgba(59, 130, 246, 0.1);
   --color-success: #10b981;
-  --color-danger: #ef4444;
+  --color-danger: #B00020;
   --color-warning: #f59e0b;
   --color-info: #06b6d4;
   
@@ -435,4 +435,99 @@ body {
 
 .floating-label--error {
   color: var(--color-danger);
+}
+
+/* Material Design Style Floating Input */
+.floating-container {
+  position: relative;
+  margin-bottom: var(--space-6);
+}
+
+.floating-border {
+  border: 1px solid var(--color-gray-300);
+  border-radius: var(--radius-base);
+  background-color: var(--color-white);
+  padding: var(--space-3) var(--space-3) var(--space-2);
+  transition: all var(--transition-base);
+}
+
+.floating-border:focus-within {
+  border-color: var(--color-primary);
+}
+
+.floating-border--error {
+  border-color: var(--color-danger);
+}
+
+.floating-border--error:focus-within {
+  border-color: var(--color-danger);
+}
+
+.floating-input-material {
+  font: inherit;
+  color: currentColor;
+  width: 100%;
+  border: 0;
+  height: 1.1876em;
+  margin: 0;
+  display: block;
+  padding: 6px 0 7px;
+  font-size: 15px;
+  min-width: 0;
+  background: none;
+  box-sizing: content-box;
+  animation-name: mui-auto-fill-cancel;
+  letter-spacing: inherit;
+  animation-duration: 10ms;
+  -webkit-tap-highlight-color: transparent;
+  background-color: transparent;
+  outline: none;
+  transition: all var(--transition-base);
+}
+
+.floating-input-material::placeholder {
+  color: transparent;
+}
+
+.floating-input-material--floating {
+  padding-top: var(--space-4);
+}
+
+.floating-input-material--default {
+  padding-top: var(--space-6);
+}
+
+.floating-label-material {
+  position: absolute;
+  left: var(--space-3);
+  transition: all var(--transition-base);
+  pointer-events: none;
+  user-select: none;
+}
+
+.floating-label-material--floating {
+  top: var(--space-1);
+  font-size: var(--font-size-xs);
+  color: var(--color-gray-600);
+}
+
+.floating-label-material--default {
+  top: var(--space-4);
+  font-size: var(--font-size-base);
+  color: var(--color-gray-400);
+}
+
+.floating-label-material--focused {
+  color: var(--color-primary);
+}
+
+.floating-label-material--error {
+  color: var(--color-danger);
+}
+
+.floating-error {
+  margin-top: var(--space-1);
+  font-size: var(--font-size-sm);
+  color: var(--color-danger);
+  padding-left: var(--space-3);
 }

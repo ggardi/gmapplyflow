@@ -300,10 +300,9 @@ export default function ApplyForm({ flash }) {
         switch (fieldName) {
             case "first_name":
                 if (!value.trim()) {
-                    newErrors.first_name = "First name is required";
+                    newErrors.first_name = "Please provide your first name";
                 } else if (value.trim().length < 3) {
-                    newErrors.first_name =
-                        "First name must be at least 3 characters";
+                    newErrors.first_name = "Must be 2 characters or more";
                 } else {
                     delete newErrors.first_name;
                 }
@@ -311,10 +310,9 @@ export default function ApplyForm({ flash }) {
 
             case "last_name":
                 if (!value.trim()) {
-                    newErrors.last_name = "Last name is required";
+                    newErrors.last_name = "Please provide your last name";
                 } else if (value.trim().length < 3) {
-                    newErrors.last_name =
-                        "Last name must be at least 3 characters";
+                    newErrors.last_name = "Must be 2 characters or more";
                 } else {
                     delete newErrors.last_name;
                 }
@@ -322,7 +320,8 @@ export default function ApplyForm({ flash }) {
 
             case "email":
                 if (!value.trim()) {
-                    newErrors.email = "Email is required";
+                    newErrors.email =
+                        "Please provide your email address - example: youremail@example.com";
                 } else if (!EMAIL_REGEX.test(value)) {
                     newErrors.email = "Please enter a valid email address";
                 } else {
@@ -537,32 +536,28 @@ export default function ApplyForm({ flash }) {
             )}
 
             <form className="form" onSubmit={handleSubmit} noValidate>
-                <FormRow>
-                    <FloatingLabelInput
-                        label="First Name"
-                        type="text"
-                        value={data.first_name}
-                        onChange={(e) =>
-                            handleFieldChange("first_name", e.target.value)
-                        }
-                        onBlur={(e) =>
-                            handleFieldBlur("first_name", e.target.value)
-                        }
-                        error={localErrors.first_name || errors.first_name}
-                    />
-                    <FloatingLabelInput
-                        label="Last Name"
-                        type="text"
-                        value={data.last_name}
-                        onChange={(e) =>
-                            handleFieldChange("last_name", e.target.value)
-                        }
-                        onBlur={(e) =>
-                            handleFieldBlur("last_name", e.target.value)
-                        }
-                        error={localErrors.last_name || errors.last_name}
-                    />
-                </FormRow>
+                <FloatingLabelInput
+                    label="First name*"
+                    type="text"
+                    value={data.first_name}
+                    onChange={(e) =>
+                        handleFieldChange("first_name", e.target.value)
+                    }
+                    onBlur={(e) =>
+                        handleFieldBlur("first_name", e.target.value)
+                    }
+                    error={localErrors.first_name || errors.first_name}
+                />
+                <FloatingLabelInput
+                    label="Last name*"
+                    type="text"
+                    value={data.last_name}
+                    onChange={(e) =>
+                        handleFieldChange("last_name", e.target.value)
+                    }
+                    onBlur={(e) => handleFieldBlur("last_name", e.target.value)}
+                    error={localErrors.last_name || errors.last_name}
+                />
 
                 <FloatingLabelInput
                     label="Email"

@@ -36,60 +36,49 @@ const FloatingLabelInput = ({
     const isLabelFloating = isFocused || hasValue;
 
     return (
-        <div className={`relative mb-6 ${className}`}>
-            {/* Input Field */}
-            <input
-                type={type}
-                value={value}
-                className={`
-                    peer w-full px-3 py-4 text-gray-900 placeholder-transparent
-                    border border-gray-300 rounded-lg bg-white
-                    focus:outline-none focus:ring-0 
-                    transition-all duration-200 ease-out
-                    ${
-                        error
-                            ? "border-red-500 focus:border-red-500"
-                            : "focus:border-blue-500"
-                    }
-                `}
-                placeholder={label}
-                onFocus={handleFocus}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                {...props}
-            />
-
-            {/* Floating Label */}
-            <label
-                className={`
-                    absolute left-3 transition-all duration-200 ease-out
-                    pointer-events-none select-none
-                    ${
-                        isLabelFloating
-                            ? `
-                            -top-2 text-xs px-1 bg-white
-                            ${
-                                error
-                                    ? "text-red-500"
-                                    : isFocused
-                                    ? "text-blue-500"
-                                    : "text-gray-600"
-                            }
-                        `
-                            : `
-                            top-4 text-base
-                            ${error ? "text-red-400" : "text-gray-400"}
-                        `
-                    }
-                `}
+        <div className={`floating-container ${className}`}>
+            {/* Input Container with Border */}
+            <div
+                className={`floating-border ${
+                    error ? "floating-border--error" : ""
+                }`}
             >
-                {label}
-            </label>
+                {/* Input Field */}
+                <input
+                    type={type}
+                    value={value}
+                    className={`floating-input-material ${
+                        isLabelFloating
+                            ? "floating-input-material--floating"
+                            : "floating-input-material--default"
+                    }`}
+                    placeholder={label}
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    {...props}
+                />
+
+                {/* Floating Label */}
+                <label
+                    className={`floating-label-material ${
+                        isLabelFloating
+                            ? "floating-label-material--floating"
+                            : "floating-label-material--default"
+                    } ${
+                        error
+                            ? "floating-label-material--error"
+                            : isFocused
+                            ? "floating-label-material--focused"
+                            : ""
+                    }`}
+                >
+                    {label}
+                </label>
+            </div>
 
             {/* Error Message */}
-            {error && (
-                <div className="mt-1 text-sm text-red-500 px-3">{error}</div>
-            )}
+            {error && <div className="floating-error">{error}</div>}
         </div>
     );
 };
