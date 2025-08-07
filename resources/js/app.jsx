@@ -16,6 +16,7 @@ createInertiaApp({
         // Import the component directly
         const pages = {
             Welcome: () => import("./Pages/ApplyForm.jsx"),
+            InputDemo: () => import("./Pages/InputDemo.jsx"),
         };
         return pages[name]();
     },

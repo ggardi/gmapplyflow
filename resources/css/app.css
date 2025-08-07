@@ -1,3 +1,5 @@
+@import 'tailwindcss';
+
 /* Design System - CSS Custom Properties */
 :root {
   /* Colors */
@@ -367,4 +369,70 @@ body {
 .searchable-item:last-child {
   border-radius: 0 0 var(--radius-base) var(--radius-base);
   border-bottom: none;
+}
+
+/* Floating Label Input Components */
+.floating-input-container {
+  position: relative;
+  margin-bottom: var(--space-2);
+}
+
+.floating-input {
+  width: 100%;
+  padding: var(--space-6) var(--space-4) var(--space-2) var(--space-4);
+  border: 1px solid var(--color-gray-300);
+  border-radius: var(--radius-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  transition: all var(--transition-base);
+  background-color: var(--color-white);
+  min-height: 58px;
+  color: var(--color-gray-900);
+}
+
+.floating-input::placeholder {
+  color: transparent;
+}
+
+.floating-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-focus);
+}
+
+.floating-input--error {
+  border-color: var(--color-danger);
+}
+
+.floating-input--error:focus {
+  box-shadow: var(--shadow-focus-danger);
+}
+
+.floating-label {
+  position: absolute;
+  left: var(--space-4);
+  top: var(--space-4);
+  font-size: var(--font-size-base);
+  color: var(--color-gray-400);
+  pointer-events: none;
+  transition: all var(--transition-base);
+  transform-origin: left top;
+  background-color: var(--color-white);
+  padding: 0 var(--space-1);
+  margin-left: calc(-1 * var(--space-1));
+}
+
+.floating-label--floating {
+  top: calc(-1 * var(--space-1));
+  font-size: var(--font-size-xs);
+  color: var(--color-gray-500);
+  transform: scale(1);
+}
+
+.floating-label--focused {
+  color: var(--color-primary);
+}
+
+.floating-label--error {
+  color: var(--color-danger);
 }

@@ -16,3 +16,8 @@ use App\Http\Controllers\ApplicationController;
 
 Route::get('/', [ApplicationController::class, 'index'])->name('home');
 Route::post('/submit-application', [ApplicationController::class, 'submit'])->name('application.submit');
+
+// Demo route for input components
+Route::get('/input-demo', function () {
+    return inertia('InputDemo');
+})->name('input.demo');
